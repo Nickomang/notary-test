@@ -9,7 +9,7 @@
             },
             "trustStores": ["ca:acme-rockets"],
             "trustedIdentities": [
-              "x509.subject: C=US, ST=WA, L=Seattle, O=acme-rockets.io, OU=Finance, CN=SecureBuilder"
+              "x509.subject: C=US, ST=WA, L=Seattle, O=acme-rockets.io, OU=Finance, CN=SecureBuilder",
 	      "x509.subject: CN=wabbit-networks.io,O=Notation,L=Seattle,ST=WA,C=US"
             ]
         }
