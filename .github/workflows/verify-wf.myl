@@ -1,0 +1,51 @@
+# setup notation and verify an OCI artifact stored in ACR
+name: notation-github-actions-verify-template
+
+on:
+  push:
+
+env:
+  ACR_REGISTRY_NAME: nickomannotarycr.azurecr.io                       # example: myRegistry.azurecr.io
+  ACR_REPO_NAME: nickomannotarycr                         # example: myRepo
+  target_artifact_reference:  nickomannotarycr.azurecr.io/nickomannotarycr@sha256:0e3642f0659bed3d5264e8445f38392ab9952b86730204ab9a19d1c5559e6b6e  # example: myRegistry.azurecr.io/myRepo@sha256:abcdef
+  NOTATION_EXPERIMENTAL: 1                                             # [Optional] when set, can use Referrers API in the workflow
+
+jobs:
+  notation-verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Log in to Azure with your service principal secret
+      - name: Azure login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # If you are using OIDC and federated credential, make sure to replace the above step with below:
+      # - name: Azure login
+      #   uses: Azure/login@v1
+      #   with:
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # Log in to your ACR registry
+      - name: ACR login
+        run: |
+            az acr login --name ${{ env.ACR_REGISTRY_NAME }}
+
+      # Install Notation CLI, the default version is "1.1.0"
+      - name: setup notation
+        uses: notaryproject/notation-action/setup@v1
+      
+      # Verify the OCI artifact
+      - name: verify OCI artifact
+        uses: notaryproject/notation-action/verify@v1
+        with:
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          trust_policy: .github/trustpolicy/trustpolicy.json
+          trust_store: .github/truststore
+          allow_referrers_api: 'true'
