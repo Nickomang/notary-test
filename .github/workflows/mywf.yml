@@ -55,7 +55,7 @@ jobs:
         run: |
           echo "target_artifact_reference=${{ env.ACR_REGISTRY_NAME }}/${{ env.ACR_REPO_NAME }}@${{ steps.push.outputs.digest }}" >> "$GITHUB_ENV"
       
-      # Install Notation CLI with the default version "1.0.0"
+      # Install Notation CLI with the default version "1.1.0"
       - name: setup notation
         uses: notaryproject/notation-action/setup@v1
       
