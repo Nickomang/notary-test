@@ -2,15 +2,15 @@
     "version": "1.0",
     "trustPolicies": [
         {
-            // Policy for all artifacts, from any registry location.
-            "name": "wabbit-networks-images",   // Name of the policy.
-            "registryScopes": [ "*" ],          // The registry artifacts to which the policy applies.
-            "signatureVerification": {          // The level of verification - strict, permissive, audit, skip.
+            "name": "wabbit-networks-images",
+            "registryScopes": [ "*" ],
+            "signatureVerification": {
               "level" : "audit" 
             },
-            "trustStores": ["ca:acme-rockets"], // The trust stores that contains the X.509 trusted roots.
-            "trustedIdentities": [              // Identities that are trusted to sign the artifact.
+            "trustStores": ["ca:acme-rockets"],
+            "trustedIdentities": [
               "x509.subject: C=US, ST=WA, L=Seattle, O=acme-rockets.io, OU=Finance, CN=SecureBuilder"
+	      "x509.subject: CN=wabbit-networks.io,O=Notation,L=Seattle,ST=WA,C=US"
             ]
         }
     ]
